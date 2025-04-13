@@ -9,8 +9,5 @@
         <module name="RandomStringGenerator" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="RandomStringGenerator" target="18" />
-    </bytecodeTargetLevel>
   </component>
 </project>
