@@ -18,7 +18,7 @@ public class GenerateRandomStringScene {
 
     public GenerateRandomStringScene(){}
     public Parent getRoot (){
-    /// test
+    TextField test;
     TextField inputStringLengthField = StringLengthInputField();
     Button generateStringButton = GenerateStringButton();
     CheckBox optionOne = OptionOne();
