@@ -3,10 +3,7 @@ package org.example;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -15,25 +12,54 @@ import javafx.scene.layout.VBox;
 import javax.swing.*;
 
 public class GenerateRandomStringScene {
+    private TextField inputStringLengthField;
+    private TextArea resultText;
+    private CheckBox includeAlphabeticalChars;
+    private CheckBox includeNumericalChars;
+    private CheckBox includeSpecialChars;
+    private GenerateRandomStringSceneMethods stringGenerationService;
 
-    public GenerateRandomStringScene(){}
+    public GenerateRandomStringScene(GenerateRandomStringSceneMethods stringGenerationService){
+        this.stringGenerationService = new GenerateRandomStringSceneMethods();
+    }
     public Parent getRoot (){
-    TextField test;
-    TextField inputStringLengthField = StringLengthInputField();
-    Button generateStringButton = GenerateStringButton();
-    CheckBox optionOne = OptionOne();
+        inputStringLengthField = StringLengthInputField();
+        Button generateStringButton = GenerateStringButton();
 
-    CheckBox optionTwo = OptionTwo();
-    CheckBox optionThree = OptionThree();
+        includeAlphabeticalChars = OptionOne();
 
-    HBox hbox = SearchAreaHBox(inputStringLengthField, generateStringButton);
-    GridPane gridPane = ChecklistsGrid(optionOne, optionTwo, optionThree);
+        includeNumericalChars = OptionTwo();
+        includeSpecialChars = OptionThree();
 
-    TextArea resultText = GeneratedStringResultText();
-    VBox root = RootElement(hbox, gridPane, resultText);
-    return root;
+        HBox hbox = SearchAreaHBox(inputStringLengthField, generateStringButton);
+        GridPane gridPane = ChecklistsGrid(includeAlphabeticalChars, includeNumericalChars, includeSpecialChars);
+
+        resultText = GeneratedStringResultText();
+        VBox root = RootElement(hbox, gridPane, resultText);
+
+        return root;
     }
 
+    public TextField getInputStringLengthField(){
+        return this.inputStringLengthField;
+    }
+    public TextArea getResultText(){
+        return this.resultText;
+    }
+    public void setResultText(String value){
+        resultText.setText(value);
+    }
+    public CheckBox getOptionOne() {
+        return this.includeAlphabeticalChars;
+    }
+
+    public  CheckBox getOptionTwo(){
+        return this.includeNumericalChars;
+    }
+
+    public CheckBox getOptionThree(){
+        return this.includeSpecialChars;
+    }
     private VBox RootElement(HBox SearchAreaHBox, GridPane ChecklistsGrid, TextArea GeneratedStringResultText) {
         VBox root = new VBox(20);
 
@@ -66,7 +92,23 @@ public class GenerateRandomStringScene {
         return randomStringLength;
     }
     private Button GenerateStringButton(){
-        return new Button("Generate");
+        Button generateStringButton =  new Button("Generate");
+        generateStringButton.setOnAction(actionEvent -> {
+            try {
+                resultText.setText(stringGenerationService.GenerateRandomString(
+                inputStringLengthField.getText(),
+                includeAlphabeticalChars.isSelected(),
+                includeNumericalChars.isSelected(),
+                includeSpecialChars.isSelected()));
+            }catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("An Error Occurred");
+                alert.setHeaderText("Something went wrong");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+        });
+        return generateStringButton;
     }
 
     private CheckBox OptionOne(){
