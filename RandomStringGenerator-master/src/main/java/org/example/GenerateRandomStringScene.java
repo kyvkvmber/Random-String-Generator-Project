@@ -49,6 +49,7 @@ public class GenerateRandomStringScene {
         hbox.getChildren().add(inputStringLengthField);
         HBox.setHgrow(inputStringLengthField, Priority.ALWAYS);
         hbox.getChildren().add(generateStringButton);
+        //
         return hbox;
     }
     private TextField StringLengthInputField(){
